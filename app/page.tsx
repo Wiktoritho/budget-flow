@@ -1,95 +1,64 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
+import ButtonGreen from "./components/ButtonGreen/ButtonGreen";
+import HomeElement from "./components/HomeElement/HomeElement";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const homeElements = [
+    {
+      title: "Introducing BudgetFlow",
+      subtitle: "",
+      text: "Join our community and experience the benefits today!",
+      buttonText: "Try for free",
+      image: "home-element1.png",
+      alt: "Money Chart Icon",
+    },
+    {
+      title: "All your finances in one place",
+      subtitle: "Budget Pro",
+      text: "We take care of your finances, helping you track, manage, and grow your money.",
+      buttonText: "Try now",
+      image: "home-element2.png",
+      alt: "Save Money Icon",
+    },
+    {
+      title: "Save money and stay on budget",
+      subtitle: "Cost Saver",
+      text: "Powerful tool that helps you reduce costs and save money on your daily expenses. With advanced analytics and optimization algorithms, CostSaver analyzes your spending habits and identifies areas for improvement.",
+      buttonText: "Try now",
+      image: "home-element3.png",
+      alt: "Piggy Safe Icon",
+    },
+  ];
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  return (
+    <main className={styles.main}>
+      <section className={styles.main__container}>
+        <div className={styles.intro}>
+          <div className={styles.intro__block}>
+            <h1 className={styles.intro__block_header}>
+              The best way to manage your budget.
+            </h1>
+            <div className={styles.intro__block_buttons}>
+              <ButtonGreen text="Try for free" />
+              <ButtonGreen text="See how it works" />
+            </div>
+          </div>
+          <img src="/Icons/money-chart.png" alt="Money Chart Picture" />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </section>
+      <section className={styles.main__container}>
+        {homeElements.map((element, index) => (
+          <HomeElement
+            key={index}
+            image={element.image}
+            alt={element.alt}
+            subtitle={element.subtitle}
+            title={element.title}
+            text={element.text}
+            buttonText={element.buttonText}
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        ))}
+      </section>
+    </main>
   );
 }

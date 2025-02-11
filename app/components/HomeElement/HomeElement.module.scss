@@ -1,0 +1,32 @@
+.homeElement {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+  &:nth-of-type(2) {
+    flex-direction: row;
+  }
+  &__block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 250px;
+    gap: 30px;
+    max-width: 50%;
+    &_title {
+      font-size: 4.5rem;
+      max-width: 70%;
+      line-height: 1;
+    }
+    &_subtitle {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    &_text {
+      max-width: 50%;
+    }
+  }
+}
+.homeElement:nth-of-type(2) .homeElement__block {
+    margin-left: 0;
+}
