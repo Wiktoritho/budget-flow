@@ -5,7 +5,7 @@ export default function Navbar() {
         <header className={styles.header}>
             <nav className={styles.navbar}>
             <div className={styles.navbar__block}>
-                <h2 className={styles.navbar__block_header}>BudgetFlow</h2>
+                <a className={styles.navbar__block_header} href="/">BudgetFlow</a>
                 <div className={styles.navbar__block_flex}>
                     <a href="/">Home</a>
                     <a href="">About us</a>

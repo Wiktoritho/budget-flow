@@ -1,5 +1,5 @@
 import styles from "./HomeElement.module.scss";
-import ButtonGreen from "../ButtonGreen/ButtonGreen";
+import Button from "../Button/Button";
 
 interface HomeElementProps {
   title: string;
@@ -25,7 +25,7 @@ export default function HomeElement({
         <p className={styles.homeElement__block_subtitle}>{subtitle}</p>
         <h3 className={styles.homeElement__block_title}>{title}</h3>
         <p className={styles.homeElement__block_text}>{text}</p>
-        <ButtonGreen text={buttonText}/>
+        <Button text={buttonText} variant="green"/>
       </div>
     </div>
   );
