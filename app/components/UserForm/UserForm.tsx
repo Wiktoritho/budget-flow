@@ -14,7 +14,7 @@ export default function LoginForm({ type }: { type: string }) {
   return (
     <div className={styles.login}>
       <div className={styles.login__header}>
-        <Image src="/Icons/Icon-wallet.png" alt="wallet icon"/>
+        <Image src="/Icons/Icon-wallet.png" alt="wallet icon" width={40} height={48}/>
         <h1>BudgetFlow</h1>
       </div>
       <Formik<FormValues>

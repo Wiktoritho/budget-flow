@@ -68,11 +68,17 @@ export default function Home() {
               The best way to manage your budget.
             </h1>
             <div className={styles.intro__block_buttons}>
-              <Button text="Try for free" variant="green" />
-              <Button text="See how it works" variant="green" />
+              <Button text="Try for free" href="/signup" variant="green" />
+              <Button text="See how it works" href="/" variant="green" />
             </div>
           </div>
-          <Image src="/Icons/money-chart.png" alt="Money Chart Picture" />
+          <Image
+            src="/Icons/money-chart.png"
+            alt="Money Chart Picture"
+            width={520}
+            height={520}
+            layout="responsive"
+          />
         </div>
       </section>
       <section
@@ -104,6 +110,10 @@ export default function Home() {
             className={styles.grayBlock__absolute}
             src="/Icons/grayblock-image.png"
             alt="IT guy"
+            width={460}
+            height={460}
+            layout="responsive"
+            loading="lazy"
           />
           <div className={styles.grayBlock__container}>
             <h2 className={styles.grayBlock__container_header}>
@@ -112,7 +122,7 @@ export default function Home() {
             <p className={styles.grayBlock__container_text}>
               Just 3 simple steps to manage your finances.
             </p>
-            <Button text="Join BudgetFlow" variant="white" />
+            <Button text="Join BudgetFlow" href="/signup" variant="white" />
           </div>
           <div className={styles.grayBlock__container}>
             <div className={styles.grayBlock__container_step}>
@@ -147,13 +157,17 @@ export default function Home() {
             <p className={styles.grayBlock__container_text}>
               Start taking control of your finances now.
             </p>
-            <Button text="Join now" variant="white" />
+            <Button text="Join now" href="/signup" variant="white" />
           </div>
           <div className={styles.grayBlock__container}>
             <Image
               className={styles.grayBlock__container_image}
               src="/Icons/grayblock-image2.png"
               alt="Tech girl icon"
+              width={460}
+              height={460}
+              layout="responsive"
+              loading="lazy"
             />
           </div>
         </div>

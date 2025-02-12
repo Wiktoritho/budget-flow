@@ -17,16 +17,23 @@ export default function HomeElement({
   text,
   buttonText,
   image,
-  alt
+  alt,
 }: HomeElementProps) {
   return (
     <div className={styles.homeElement}>
-      <Image src={`/Icons/${image}`} alt={alt}/>
+      <Image
+        src={`/Icons/${image}`}
+        alt={alt}
+        width={460}
+        height={460}
+        layout="responsive"
+        loading="lazy"
+      />
       <div className={styles.homeElement__block}>
         <p className={styles.homeElement__block_subtitle}>{subtitle}</p>
         <h3 className={styles.homeElement__block_title}>{title}</h3>
         <p className={styles.homeElement__block_text}>{text}</p>
-        <Button text={buttonText} variant="green"/>
+        <Button text={buttonText} href="/login" variant="green" />
       </div>
     </div>
   );
