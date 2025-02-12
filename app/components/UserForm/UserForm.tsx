@@ -3,6 +3,7 @@
 import { Formik } from "formik";
 import Button from "../Button/Button";
 import styles from "./UserForm.module.scss";
+import Image from "next/image";
 
 interface FormValues {
   email: string;
@@ -13,7 +14,7 @@ export default function LoginForm({ type }: { type: string }) {
   return (
     <div className={styles.login}>
       <div className={styles.login__header}>
-        <img src="/Icons/Icon-wallet.png" />
+        <Image src="/Icons/Icon-wallet.png" alt="wallet icon"/>
         <h1>BudgetFlow</h1>
       </div>
       <Formik<FormValues>

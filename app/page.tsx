@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import styles from "./page.module.scss";
+import Image from "next/image";
 import Button from "./components/Button/Button";
 import HomeElement from "./components/HomeElement/HomeElement";
 
@@ -71,7 +72,7 @@ export default function Home() {
               <Button text="See how it works" variant="green" />
             </div>
           </div>
-          <img src="/Icons/money-chart.png" alt="Money Chart Picture" />
+          <Image src="/Icons/money-chart.png" alt="Money Chart Picture" />
         </div>
       </section>
       <section
@@ -99,7 +100,7 @@ export default function Home() {
         }}
       >
         <div className={styles.grayBlock}>
-          <img
+          <Image
             className={styles.grayBlock__absolute}
             src="/Icons/grayblock-image.png"
             alt="IT guy"
@@ -149,7 +150,7 @@ export default function Home() {
             <Button text="Join now" variant="white" />
           </div>
           <div className={styles.grayBlock__container}>
-            <img
+            <Image
               className={styles.grayBlock__container_image}
               src="/Icons/grayblock-image2.png"
               alt="Tech girl icon"

@@ -1,20 +1,21 @@
 import styles from "./Navbar.module.scss";
+import Link from "next/link";
 
 export default function Navbar() {
     return(
         <header className={styles.header}>
             <nav className={styles.navbar}>
             <div className={styles.navbar__block}>
-                <a className={styles.navbar__block_header} href="/">BudgetFlow</a>
+                <Link className={styles.navbar__block_header} href="/">BudgetFlow</Link>
                 <div className={styles.navbar__block_flex}>
-                    <a href="/">Home</a>
-                    <a href="">About us</a>
-                    <a href="">Contact</a>
+                    <Link href="/">Home</Link>
+                    <Link href="">About us</Link>
+                    <Link href="">Contact</Link>
                 </div>
             </div>
             <div className={styles.navbar__block}>
-                <a href="/login" className={styles.navbar__block_titledLink}>Log in</a>
-                <a href="/signup" className={styles.navbar__block_titledLink}>Sign up</a>
+                <Link href="/login" className={styles.navbar__block_titledLink}>Log in</Link>
+                <Link href="/signup" className={styles.navbar__block_titledLink}>Sign up</Link>
             </div>
             </nav>
         </header>

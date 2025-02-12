@@ -1,5 +1,6 @@
 import styles from "./HomeElement.module.scss";
 import Button from "../Button/Button";
+import Image from "next/image";
 
 interface HomeElementProps {
   title: string;
@@ -20,7 +21,7 @@ export default function HomeElement({
 }: HomeElementProps) {
   return (
     <div className={styles.homeElement}>
-      <img src={`/Icons/${image}`} alt={alt}/>
+      <Image src={`/Icons/${image}`} alt={alt}/>
       <div className={styles.homeElement__block}>
         <p className={styles.homeElement__block_subtitle}>{subtitle}</p>
         <h3 className={styles.homeElement__block_title}>{title}</h3>
