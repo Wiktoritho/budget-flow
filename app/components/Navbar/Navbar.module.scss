@@ -16,6 +16,18 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    &_profile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      img {
+        border-radius: 50%;
+      }
+    }
     &_header {
       font-size: 2rem;
       font-weight: 600;
@@ -31,6 +43,15 @@
           scale: 1.1;
           transition: all 0.1s ease-in-out;
         }
+      }
+      input {
+        padding-left: 20px;
+        height: 40px;
+        width: 100%;
+        background-color: var(--gray);
+        outline: none;
+        border: 1px solid var(--gray);
+        border-radius: 12px;
       }
     }
     &_titledLink {

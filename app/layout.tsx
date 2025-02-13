@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppinsSans.className}`}>
-      <Navbar/>
+      <Navbar userActive={true}/>
         <main className={styles.main}>
         {children}
         </main>
