@@ -12,20 +12,6 @@ export default function Dashboard() {
 
   const userActive = useSelector((state: RootState) => state.auth.isLoggedIn)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/test'); 
-        console.log(response);
-        
-      } catch (error) {
-        console.error("Błąd podczas pobierania danych:", error);
-      }
-    };
-
-    fetchData();
-  }, [])
-
   return (
     <>
       <Navbar userActive={userActive}/>

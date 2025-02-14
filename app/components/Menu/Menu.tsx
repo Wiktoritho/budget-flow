@@ -12,31 +12,31 @@ export default function Menu() {
           </div>
           <p>Home</p>
         </Link>
-        <Link className={styles.menu__block_row} href='/flow'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/hanger.svg" alt="Hanger Icon" width={20} height={20} />
           </div>
           <p>Flow</p>
         </Link>
-        <Link className={styles.menu__block_row} href='/categories'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/categories.svg" alt="Categories Icon" width={20} height={20} />
           </div>
           <p>Categories</p>
         </Link>
-        <Link className={styles.menu__block_row} href='/statistics'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/statistics.svg" alt="Statistics Icon" width={20} height={20} />
           </div>
           <p>Statistics</p>
         </Link>
-        <Link className={styles.menu__block_row} href='/expected'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/expected.svg" alt="Expected Icon" width={20} height={20} />
           </div>
           <p>Expected</p>
         </Link>
-        <Link className={styles.menu__block_row} href='/settings'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/settings.svg" alt="Settings Icon" width={20} height={20} />
           </div>
@@ -44,7 +44,7 @@ export default function Menu() {
         </Link>
       </div>
       <div className={styles.menu__block}>
-        <Link className={styles.menu__block_row} href='/logout'>
+        <Link className={styles.menu__block_row} href='/'>
           <div>
             <Image src="/Icons/logout.svg" alt="Logout Icon" width={20} height={20} />
           </div>
