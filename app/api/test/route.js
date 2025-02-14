@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_PASS);
+const client = new MongoClient('mongodb+srv://wiktorgola95:zCNkn2xi6yiGKPNx@budgetflowcluster.rwjym.mongodb.net/?retryWrites=true&w=majority&appName=BudgetFlowCluster');
 
 export async function GET() {
   try {
