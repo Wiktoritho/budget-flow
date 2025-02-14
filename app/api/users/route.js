@@ -1,15 +1,15 @@
-import { connectToDatabase } from "../../utils/db";
-import users from "../../models/User"
-import { NextResponse } from "next/server";
+'use server';
+import { NextResponse } from 'next/server';
+import { dbUsersConnection } from "../../utils/db";
 
-export async function GET(req, res) {    
-    await connectToDatabase();
-    const userss = await users.find({});
-    return NextResponse.json(userss);
-}
-
-export async function POST(req, res) {
-  await connectToDatabase();
-  const newUser = await users.create(req.body);
-  return NextResponse.json(newUser, { status: 201 });
+export async function GET() {
+  try {
+    const db = await dbUsersConnection();
+    const collection = db.collection("credentials");
+    const users = await collection.find({}).toArray();
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+  }
 }

@@ -1,32 +1,27 @@
-'use server';
-import mongoose from "mongoose";
+"use server";
+import { MongoClient } from "mongodb";
 
-const mongodb_uri = process.env.MONGODB_PASS;
+const client = new MongoClient(process.env.MONGODB_PASS);
 
-global.mongoose = global.mongoose || { conn: null, promise: null };
-
-export async function connectToDatabase() {
-  if (global.mongoose.conn) {
-    console.log("Using existing database connection");
-    return global.mongoose.conn;
+async function connectToDatabase() {
+  try {
+    await client.connect();
+  } catch (error) {
+    console.log(error);
   }
+}
 
-  if (!global.mongoose.promise) {
-    console.log("Creating new database connection");
-    
-    global.mongoose.promise = mongoose.connect(mongodb_uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
-      .then((mongoose) => mongoose)
-      .catch((err) => {
-        console.error("MongoDB connection error:", err);
-        throw err;
-      });
+connectToDatabase();
+
+export async function dbUsersConnection() {
+  const db = client.db("users");
+  return db;
+}
+
+export async function closeConnection() {
+  try {
+    await client.close();
+  } catch (error) {
+    console.error(error);
   }
-
-  global.mongoose.conn = await global.mongoose.promise;
-  console.log("Database connected successfully");
-  
-  return global.mongoose.conn;
 }

@@ -2,23 +2,20 @@
 
 import styles from "./page.module.scss";
 import Menu from "../components/Menu/Menu";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import Navbar from "../components/Navbar/Navbar";
 
 export default function Dashboard() {
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch('/api/users').then((res) => res.json())
-      console.log(response);
-      
-    };
-
-    fetchUsers()
-  }, [])
+  const userActive = useSelector((state: RootState) => state.auth.isLoggedIn)
 
   return (
-    <div className={styles.dashboard}>
+    <>
+      <Navbar userActive={userActive}/>
+      <div className={styles.dashboard}>
       <Menu />
-    </div>
+      </div>
+      </>
   );
 }

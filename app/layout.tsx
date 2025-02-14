@@ -1,34 +1,26 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import styles from "./page.module.scss";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const poppinsSans = Poppins({
   subsets: ['latin'],
-  weight: '400'
+  weight: '400',
 });
 
-export const metadata: Metadata = {
-  title: "Budget Flow - your home budget",
-  description: "Take care of your budget by using a Budget Flow",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${poppinsSans.className}`}>
-      <Navbar userActive={true}/>
-        <main className={styles.main}>
-        {children}
-        </main>
-      <Footer/>
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="en">
+        <body className={`${poppinsSans.className}`}>
+          <main className={styles.main}>{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </Provider>
   );
 }

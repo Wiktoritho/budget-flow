@@ -5,6 +5,7 @@ import styles from "./page.module.scss";
 import Image from "next/image";
 import Button from "./components/Button/Button";
 import HomeElement from "./components/HomeElement/HomeElement";
+import Navbar from "./components/Navbar/Navbar";
 
 export default function Home() {
   const homeElements = [
@@ -61,6 +62,7 @@ export default function Home() {
 
   return (
     <>
+      <Navbar userActive={false}/>
       <section className={styles.main__container}>
         <div className={styles.intro}>
           <div className={styles.intro__block}>
