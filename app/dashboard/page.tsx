@@ -12,15 +12,6 @@ export default function Dashboard() {
 
   const userActive = useSelector((state: RootState) => state.auth.isLoggedIn)
 
-  useEffect(() => {
-    const fetchdata = async () => {
-      const response = await axios.get('/api/test')
-      console.log(response);
-      
-    }
-
-    fetchdata()
-  }, [])
 
   return (
     <>

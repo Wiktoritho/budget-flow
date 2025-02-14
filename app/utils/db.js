@@ -1,7 +1,7 @@
 "use server";
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(process.env.NEXT_PUBLIC_MONGODB_PASS);
+const client = new MongoClient(process.env.MONGODB_PASS);
 
 async function connectToDatabase() {
   try {
