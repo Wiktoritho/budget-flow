@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Transaction {
+export interface Transaction {
   name: string;
   category: string;
   value: number;
   date: string;
+  id: number;
 }
 
 interface User {

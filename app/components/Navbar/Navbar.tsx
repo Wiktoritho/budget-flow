@@ -1,9 +1,25 @@
+"use client";
 import styles from "./Navbar.module.scss";
 import Link from "next/link";
 import Button from "../Button/Button";
 import Image from "next/image";
+import { useState } from "react";
 
-export default function Navbar({ userActive }: { userActive: boolean }) {
+interface NavbarProps {
+  userActive: Boolean;
+  onSearch: (query: string) => void;
+  addTransaction: (value: Boolean) => void;
+}
+
+export default function Navbar({ userActive, onSearch, addTransaction }: NavbarProps) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    onSearch(value);
+  };
+
   return (
     <header className={styles.header}>
       <nav className={styles.navbar}>
@@ -19,7 +35,7 @@ export default function Navbar({ userActive }: { userActive: boolean }) {
             </div>
           ) : (
             <div className={styles.navbar__block_flex}>
-              <input placeholder="Search for expenses" />
+              <input placeholder="Search for expenses" onChange={handleSearch} />
             </div>
           )}
         </div>
@@ -34,8 +50,8 @@ export default function Navbar({ userActive }: { userActive: boolean }) {
           </div>
         ) : (
           <div className={styles.navbar__block}>
-            <Button text="Add" variant="green" />
-            <Link className={styles.navbar__block_profile} href='/profile'>
+            <Button text="Add" variant="green" onClick={() => addTransaction(true)}/>
+            <Link className={styles.navbar__block_profile} href="/profile">
               <Image src="/Images/profile-pic.jpg" alt="Profile Picture" width={44} height={44} />
             </Link>
           </div>

@@ -5,9 +5,10 @@ interface ButtonProps {
   text: string;
   variant?: "green" | "white";
   href?: string;
+  onClick?: () => void;
 }
 
-export default function Button({ text, variant = "green", href }: ButtonProps) {
+export default function Button({ text, variant = "green", href, onClick }: ButtonProps) {
   if (href) {
     return (
       <Link
@@ -21,7 +22,7 @@ export default function Button({ text, variant = "green", href }: ButtonProps) {
   }
   return (
     <button
-      className={variant === "green" ? styles.buttonGreen : styles.buttonWhite}
+      className={variant === "green" ? styles.buttonGreen : styles.buttonWhite} onClick={onClick}
     >
       {text}
     </button>
