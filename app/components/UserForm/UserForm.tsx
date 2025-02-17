@@ -8,7 +8,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
 import { useRouter } from "next/navigation";
-import Cookie from 'js-cookie';
+import Cookie from "js-cookie";
 
 interface FormValues {
   email: string;
@@ -22,9 +22,9 @@ export default function LoginForm({ type }: { type: string }) {
   const handleLogin = async (values: FormValues) => {
     try {
       const response = await axios.post("/api/login", values);
-      Cookie.set('user', JSON.stringify({email: values.email}), { expires: 7})
-      dispatch(login({ email: values.email }));
-      router.push('/dashboard')
+      Cookie.set("user", JSON.stringify({ email: values.email }), { expires: 7 });
+      dispatch(login({ email: values.email, spending: [], income: [] }));
+      router.push("/dashboard");
     } catch (error: any) {
       if (error.response) {
         console.error(error.response.data.error);

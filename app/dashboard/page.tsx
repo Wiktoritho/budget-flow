@@ -19,10 +19,6 @@ export default function Dashboard() {
   const periods = ["Daily", "Weekly", "Monthly", "Yearly"];
   const { user, isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
 
-  const testsome = () => {
-    console.log(user);
-  };
-
   interface User {
     email: string;
     name: string;

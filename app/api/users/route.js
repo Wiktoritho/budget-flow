@@ -15,7 +15,6 @@ export async function GET(req) {
     } else {
       users = await collection.find({}).toArray();
     }
-    console.log(users);
     
     return NextResponse.json(users);
   } catch (error) {
