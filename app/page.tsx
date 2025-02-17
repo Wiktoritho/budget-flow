@@ -6,6 +6,7 @@ import Image from "next/image";
 import Button from "./components/Button/Button";
 import HomeElement from "./components/HomeElement/HomeElement";
 import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
 export default function Home() {
   const homeElements = [
@@ -174,6 +175,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer/>
     </>
   );
 }

@@ -2,11 +2,21 @@
 import { NextResponse } from 'next/server';
 import { dbUsersConnection } from "../../utils/db";
 
-export async function GET() {
+export async function GET(req) {
   try {
+    const url = new URL(req.url);
+    const email = url.searchParams.get('email');
+    
     const db = await dbUsersConnection();
     const collection = db.collection("credentials");
-    const users = await collection.find({}).toArray();
+    let users
+    if (email) {
+      users = await collection.find({ email }).toArray();
+    } else {
+      users = await collection.find({}).toArray();
+    }
+    console.log(users);
+    
     return NextResponse.json(users);
   } catch (error) {
     console.error(error);
