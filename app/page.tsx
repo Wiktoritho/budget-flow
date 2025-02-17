@@ -7,6 +7,9 @@ import Button from "./components/Button/Button";
 import HomeElement from "./components/HomeElement/HomeElement";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/index";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const homeElements = [
@@ -37,6 +40,19 @@ export default function Home() {
   ];
 
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+  const router = useRouter();
+
+  const { isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (!isLoading && isLoggedIn) {
+      router.push("/dashboard");
+    }
+  }, [router, isLoggedIn, isLoading]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -61,70 +77,44 @@ export default function Home() {
     };
   }, []);
 
+  if (isLoading || isLoggedIn) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      <Navbar userActive={false}/>
+      <Navbar userActive={isLoggedIn} />
       <section className={styles.main__container}>
         <div className={styles.intro}>
           <div className={styles.intro__block}>
-            <h1 className={styles.intro__block_header}>
-              The best way to manage your budget.
-            </h1>
+            <h1 className={styles.intro__block_header}>The best way to manage your budget.</h1>
             <div className={styles.intro__block_buttons}>
               <Button text="Try for free" href="/signup" variant="green" />
               <Button text="See how it works" href="/" variant="green" />
             </div>
           </div>
-          <Image
-            src="/Icons/money-chart.png"
-            alt="Money Chart Picture"
-            width={520}
-            height={520}
-            layout="responsive"
-          />
+          <Image src="/Icons/money-chart.png" alt="Money Chart Picture" width={520} height={520} layout="responsive" />
         </div>
       </section>
       <section
         className={styles.main__container}
         ref={(el) => {
           if (el) sectionsRef.current[0] = el;
-        }}
-      >
+        }}>
         {homeElements.map((element, index) => (
-          <HomeElement
-            key={index}
-            image={element.image}
-            alt={element.alt}
-            subtitle={element.subtitle}
-            title={element.title}
-            text={element.text}
-            buttonText={element.buttonText}
-          />
+          <HomeElement key={index} image={element.image} alt={element.alt} subtitle={element.subtitle} title={element.title} text={element.text} buttonText={element.buttonText} />
         ))}
       </section>
       <section
         className={styles.main__container}
         ref={(el) => {
           if (el) sectionsRef.current[1] = el;
-        }}
-      >
+        }}>
         <div className={styles.grayBlock}>
-          <Image
-            className={styles.grayBlock__absolute}
-            src="/Icons/grayblock-image.png"
-            alt="IT guy"
-            width={460}
-            height={460}
-            layout="responsive"
-            loading="lazy"
-          />
+          <Image className={styles.grayBlock__absolute} src="/Icons/grayblock-image.png" alt="IT guy" width={460} height={460} layout="responsive" loading="lazy" />
           <div className={styles.grayBlock__container}>
-            <h2 className={styles.grayBlock__container_header}>
-              How to join our community
-            </h2>
-            <p className={styles.grayBlock__container_text}>
-              Just 3 simple steps to manage your finances.
-            </p>
+            <h2 className={styles.grayBlock__container_header}>How to join our community</h2>
+            <p className={styles.grayBlock__container_text}>Just 3 simple steps to manage your finances.</p>
             <Button text="Join BudgetFlow" href="/signup" variant="white" />
           </div>
           <div className={styles.grayBlock__container}>
@@ -134,10 +124,7 @@ export default function Home() {
             </div>
             <div className={styles.grayBlock__container_step}>
               <h3>Step 2</h3>
-              <p>
-                Get insights into your expected budgets for the upcoming
-                periods.
-              </p>
+              <p>Get insights into your expected budgets for the upcoming periods.</p>
             </div>
             <div className={styles.grayBlock__container_step}>
               <h3>Step 3</h3>
@@ -150,32 +137,19 @@ export default function Home() {
         className={styles.main__container}
         ref={(el) => {
           if (el) sectionsRef.current[2] = el;
-        }}
-      >
+        }}>
         <div className={styles.grayBlock}>
           <div className={styles.grayBlock__container}>
-            <h2 className={styles.grayBlock__container_header}>
-              Join BudgetFlow
-            </h2>
-            <p className={styles.grayBlock__container_text}>
-              Start taking control of your finances now.
-            </p>
+            <h2 className={styles.grayBlock__container_header}>Join BudgetFlow</h2>
+            <p className={styles.grayBlock__container_text}>Start taking control of your finances now.</p>
             <Button text="Join now" href="/signup" variant="white" />
           </div>
           <div className={styles.grayBlock__container}>
-            <Image
-              className={styles.grayBlock__container_image}
-              src="/Icons/grayblock-image2.png"
-              alt="Tech girl icon"
-              width={460}
-              height={460}
-              layout="responsive"
-              loading="lazy"
-            />
+            <Image className={styles.grayBlock__container_image} src="/Icons/grayblock-image2.png" alt="Tech girl icon" width={460} height={460} layout="responsive" loading="lazy" />
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 }
