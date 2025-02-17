@@ -7,8 +7,8 @@ import { useState } from "react";
 
 interface NavbarProps {
   userActive: Boolean;
-  onSearch: (query: string) => void;
-  addTransaction: (value: Boolean) => void;
+  onSearch?: (query: string) => void;
+  addTransaction?: (value: Boolean) => void;
 }
 
 export default function Navbar({ userActive, onSearch, addTransaction }: NavbarProps) {
@@ -17,7 +17,7 @@ export default function Navbar({ userActive, onSearch, addTransaction }: NavbarP
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchTerm(value);
-    onSearch(value);
+    onSearch?.(value);
   };
 
   return (
@@ -50,7 +50,7 @@ export default function Navbar({ userActive, onSearch, addTransaction }: NavbarP
           </div>
         ) : (
           <div className={styles.navbar__block}>
-            <Button text="Add" variant="green" onClick={() => addTransaction(true)}/>
+            <Button text="Add" variant="green" onClick={() => addTransaction?.(true)}/>
             <Link className={styles.navbar__block_profile} href="/profile">
               <Image src="/Images/profile-pic.jpg" alt="Profile Picture" width={44} height={44} />
             </Link>
