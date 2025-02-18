@@ -40,12 +40,6 @@ export default function Menu() {
         </Link>
         <Link className={styles.menu__block_row} href="/">
           <div>
-            <Image src="/Icons/statistics.svg" alt="Statistics Icon" width={20} height={20} />
-          </div>
-          <p>Statistics</p>
-        </Link>
-        <Link className={styles.menu__block_row} href="/">
-          <div>
             <Image src="/Icons/expected.svg" alt="Expected Icon" width={20} height={20} />
           </div>
           <p>Expected</p>
