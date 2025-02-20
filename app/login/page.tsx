@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { MoonLoader } from "react-spinners";
+import style from "../page.module.scss"
 
 export default function Login() {
   const router = useRouter();
@@ -22,7 +24,9 @@ export default function Login() {
   }, [router, isLoading, isLoggedIn]);
 
   if (isLoading || isLoggedIn) {
-    return <div>Loading...</div>;
+    return (<div className={style.loader}>
+        <MoonLoader/>
+      </div>);
   }
 
   return (

@@ -194,14 +194,18 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
                       margin: "-5px",
                       borderTopRightRadius: "12px",
                       borderBottomRightRadius: "12px",
+                      cursor: "pointer"
                     }),
                     indicatorsContainer: (base) => ({
                       ...base,
                       height: "50px",
                       backgroundColor: "#d3d3d3",
                       stroke: "white",
+                      fill: "black",
                       borderTopRightRadius: "12px",
                       borderBottomRightRadius: "12px",
+                      cursor: "pointer"
+                      
                     }),
                   }}
                   options={categories}

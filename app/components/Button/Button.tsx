@@ -6,9 +6,10 @@ interface ButtonProps {
   variant?: "green" | "white";
   href?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-export default function Button({ text, variant = "green", href, onClick }: ButtonProps) {
+export default function Button({ text, variant = "green", href, onClick, disabled }: ButtonProps) {
   if (href) {
     return (
       <Link
@@ -23,6 +24,7 @@ export default function Button({ text, variant = "green", href, onClick }: Butto
   return (
     <button
       className={variant === "green" ? styles.buttonGreen : styles.buttonWhite} onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </button>

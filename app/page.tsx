@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/index";
 import { useRouter } from "next/navigation";
+import { MoonLoader } from "react-spinners";
 
 export default function Home() {
   const homeElements = [
@@ -78,7 +79,9 @@ export default function Home() {
   }, []);
 
   if (isLoading || isLoggedIn) {
-    return <div>Loading...</div>;
+    return (<div className={styles.loader}>
+        <MoonLoader/>
+      </div>);
   }
 
   return (

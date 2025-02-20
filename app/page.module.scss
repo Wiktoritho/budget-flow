@@ -1,5 +1,4 @@
 .main {
-  
   &__container {
     padding-inline: 10%;
     display: flex;
@@ -13,7 +12,7 @@
       opacity: 0;
     }
     &:last-of-type {
-      .grayBlock{
+      .grayBlock {
         align-items: center;
       }
     }
@@ -119,4 +118,12 @@
 
 .section-enter {
   animation: slideIn 0.5s ease-out forwards;
+}
+
+.loader {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
 import { useRouter } from "next/navigation";
 import Cookie from "js-cookie";
+import { useState } from "react";
+
 
 interface FormValues {
   email: string;
@@ -19,24 +21,27 @@ export default function LoginForm({ type }: { type: string }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const handleLogin = async (values: FormValues) => {
+  const handleLogin = async (values: FormValues, helpers: any) => {
     try {
       const response = await axios.post("/api/login", values);
-      Cookie.set("user", JSON.stringify({ email: values.email }), { expires: 7 });
-      dispatch(login({ email: values.email, spending: [], income: [] }));
-      router.push("/dashboard");
+      if (response.status === 200) {
+        Cookie.set("user", JSON.stringify({ email: values.email }), { expires: 7 });
+        dispatch(login({ email: values.email, spending: [], income: [] }));
+        router.push("/dashboard");
+      }
     } catch (error: any) {
       if (error.response) {
-        console.error(error.response.data.error);
+        helpers.setErrors({ password: error.response.data.error });
       } else {
         console.error("Error: ", error.message);
       }
     }
   };
 
-  const handleRegister = async (values: FormValues) => {
+  const handleRegister = async (values: FormValues, helpers: any) => {
     try {
       const response = await axios.post("/api/register", values);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -66,13 +71,12 @@ export default function LoginForm({ type }: { type: string }) {
 
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, helpers) => {
           if (type === "Log in") {
-            handleLogin(values);
+            handleLogin(values, helpers);
           } else {
-            handleRegister(values);
+            handleRegister(values, helpers);
           }
-          setSubmitting(false);
         }}>
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
           <form onSubmit={handleSubmit} className={styles.login__form}>
@@ -88,7 +92,7 @@ export default function LoginForm({ type }: { type: string }) {
               {errors.password && touched.password && <div className={styles.login__form_error}>{errors.password}</div>}
             </label>
             <div className={styles.login__form_buttons}>
-              <Button text={type} variant="green" />
+              <Button text={type} variant="green" disabled={false} />
               {type === "Log in" && <p>Forgot your password?</p>}
             </div>
           </form>

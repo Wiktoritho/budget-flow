@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
+import style from "../page.module.scss";
 import Menu from "../components/Menu/Menu";
 import Navbar from "../components/Navbar/Navbar";
 import Image from "next/image";
@@ -14,6 +15,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { setUserData } from "../store/authSlice";
 import { Transaction } from "../store/authSlice";
+import { MoonLoader } from "react-spinners";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -101,7 +103,9 @@ export default function Dashboard() {
   }, [isLoggedIn, isLoading, router, user?.email, dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (<div className={style.loader}>
+        <MoonLoader/>
+      </div>);
   }
 
   return (
