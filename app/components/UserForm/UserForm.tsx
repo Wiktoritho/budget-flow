@@ -11,39 +11,54 @@ import { useRouter } from "next/navigation";
 import Cookie from "js-cookie";
 import { useState } from "react";
 
-
 interface FormValues {
   email: string;
   password: string;
 }
 
 export default function LoginForm({ type }: { type: string }) {
+  const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
   const handleLogin = async (values: FormValues, helpers: any) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     try {
       const response = await axios.post("/api/login", values);
       if (response.status === 200) {
         Cookie.set("user", JSON.stringify({ email: values.email }), { expires: 7 });
         dispatch(login({ email: values.email, spending: [], income: [] }));
         router.push("/dashboard");
+        setIsProcessing(false);
       }
     } catch (error: any) {
       if (error.response) {
         helpers.setErrors({ password: error.response.data.error });
+        setIsProcessing(false);
       } else {
         console.error("Error: ", error.message);
+        setIsProcessing(false);
       }
     }
   };
 
   const handleRegister = async (values: FormValues, helpers: any) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     try {
       const response = await axios.post("/api/register", values);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
+      if (response.status === 200) {
+        setIsProcessing(false);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        helpers.setErrors({ password: error.response.data.error });
+        setIsProcessing(false);
+      } else {
+        console.error("Error: ", error.message);
+        setIsProcessing(false);
+      }
     }
   };
 

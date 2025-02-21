@@ -9,6 +9,7 @@ import Button from "../Button/Button";
 import Select from "react-select";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { setCategoryData } from "@/app/store/categorySlice";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -22,6 +23,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
 
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { categories } = useSelector((state: RootState) => state.category);
 
   const [transactionData, setTransactionData] = useState({
     name: "",
@@ -31,10 +33,6 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
     id: uuidv4(),
   });
 
-  const [categories, setCategories] = useState<
-    { value: string; label: string }[]
-  >([]);
-
   const [transactionError, setTransactionError] = useState({
     name: true,
     value: true,
@@ -42,22 +40,24 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   });
 
   const getCategories = async () => {
+    if (!user?.email) return;
+
     try {
       const response = await axios.get("/api/users");
-      const userData = response.data.find(
-        (item: any) => item.email === user?.email
-      );
+      const userData = response.data.find((item: any) => item.email === user.email);
 
-      if (userData && userData.categories) {
-        setCategories(
-          userData.categories.map((category: string) => ({
-            value: category,
-            label: category,
-          }))
-        );
+      if (userData?.categories?.length > 0) {
+        const formattedCategories = userData.categories.map((category: string) => ({
+          value: category,
+          label: category,
+        }));
+
+        dispatch(setCategoryData({ categories: formattedCategories }));
+      } else {
+        console.log("No Categories");
       }
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error(error);
     }
   };
 
@@ -75,9 +75,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
     const data = response.data;
 
     if (data.message === "Data Updated" && data.data) {
-      dispatch(
-        setUserData({ spending: data.data.spending, income: data.data.income })
-      );
+      dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
     } else {
       console.log("Failed to update data");
     }
@@ -106,11 +104,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
     if (!trimmedName) {
       error.name = true;
     }
-    if (
-      !trimmedValue ||
-      isNaN(Number(trimmedValue)) ||
-      Number(trimmedValue) <= 0
-    ) {
+    if (!trimmedValue || isNaN(Number(trimmedValue)) || Number(trimmedValue) <= 0) {
       error.value = true;
     }
     if (!trimmedCategory) {
@@ -200,8 +194,6 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
                       ...base,
                       height: "50px",
                       backgroundColor: "#d3d3d3",
-                      stroke: "white",
-                      fill: "black",
                       borderTopRightRadius: "12px",
                       borderBottomRightRadius: "12px",
                       cursor: "pointer"
