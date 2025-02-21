@@ -17,7 +17,7 @@ export async function POST(request) {
     const result = await collection.insertOne({
       email: data.email,
       password: data.password,
-      categories: [
+      spendingCategories: [
         "Clothes and Shoes",
         "Entertainment",
         "Equipment",
@@ -25,6 +25,13 @@ export async function POST(request) {
         "Payments",
         "Subscription",
       ],
+      incomeCategories: [
+        "Work salary",
+        "Own business",
+        "Refunds",
+        "Sales",
+        "Services"
+      ]
     });
     return NextResponse.json({
       message: "User registered successfully!",

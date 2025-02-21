@@ -4,7 +4,7 @@ import { dbUsersConnection } from "../../../utils/db";
 
 export async function POST(request) {
   try {
-    const { email, transactionId } = await request.json();
+    const { email, transactionId, type } = await request.json();
 
     const db = await dbUsersConnection();
     const collection = db.collection("credentials");
@@ -15,9 +15,11 @@ export async function POST(request) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
     }
 
+    const updateField = type === 'income' ? 'income' : 'spending'
+
     const result = await collection.updateOne(
       { email },
-      { $pull: { spending: {id: transactionId} } }
+      { $pull: { [updateField]: {id: transactionId} } }
     );
 
     if (result.modifiedCount === 0) {

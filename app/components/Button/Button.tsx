@@ -1,5 +1,6 @@
 import styles from "./Button.module.scss";
 import Link from "next/link";
+import clsx from "clsx";
 
 interface ButtonProps {
   text: string;
@@ -7,13 +8,20 @@ interface ButtonProps {
   href?: string;
   onClick?: () => void;
   disabled?: boolean;
+  greenActive?: string;
 }
 
-export default function Button({ text, variant = "green", href, onClick, disabled }: ButtonProps) {
+export default function Button({ text, variant = "green", href, onClick, disabled, greenActive }: ButtonProps) {
+
+  const buttonClass = clsx(
+    variant === "green" ? styles.buttonGreen : styles.buttonWhite,
+    greenActive === text && styles.activeButton
+  )
+
   if (href) {
     return (
       <Link
-        className={variant === "green" ? styles.buttonGreen : styles.buttonWhite}
+        className={buttonClass}
         href={href}
         passHref
       >
@@ -23,7 +31,7 @@ export default function Button({ text, variant = "green", href, onClick, disable
   }
   return (
     <button
-      className={variant === "green" ? styles.buttonGreen : styles.buttonWhite} onClick={onClick}
+      className={buttonClass} onClick={onClick}
       disabled={disabled}
     >
       {text}

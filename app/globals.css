@@ -3,9 +3,10 @@
   --black: #000;
   --foreground: #171717;
   --background: #eeeeee;
-  --green: #74f90c;
+  --green: #b4e6b4;
   --gray: #d3d3d3;
   --darkgray: #c1c1c1;
+  --darkgreen: #107210;
 }
 
 html,
@@ -16,7 +17,7 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--white);
+  background: #f7f7f7;
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
