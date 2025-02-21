@@ -170,7 +170,8 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
                   }
                 />
               ) : (
-                <p>Loading...</p>
+                  <p>Loading...</p>
+                  //t
               )}
             </label>
           </div>
