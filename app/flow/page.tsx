@@ -70,7 +70,7 @@ export default function Flow() {
             </div>
             <div className={styles.dashboard__section_bottom}>
               <div className={styles.dashboard__section_bottom_flex}>
-                <GrayContainer title="Overview" transactionType="spending" selects={true} />
+                {/* <GrayContainer title="Overview" transactionType="spending" selects={true} /> */}
               </div>
             </div>
             <div className={styles.dashboard__section_top}>
@@ -78,7 +78,7 @@ export default function Flow() {
             </div>
             <div className={styles.dashboard__section_bottom}>
               <div className={styles.dashboard__section_bottom_flex}>
-                <GrayContainer title="Overview" transactionType="income" selects={true}/>
+                {/* <GrayContainer title="Overview" transactionType="income" selects={true}/> */}
               </div>
             </div>
           </section>
