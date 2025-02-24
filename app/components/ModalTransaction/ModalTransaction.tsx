@@ -25,7 +25,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
-  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategoryReducer);
+  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
   const { getIncomeCategories } = useIncomeCategories();
   const { getSpendingCategories } = useSpendingCategories();
   const [isProcessing, setIsProcessing] = useState(false);

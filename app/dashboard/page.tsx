@@ -17,6 +17,7 @@ import { setUserData } from "../store/authSlice";
 import { Transaction } from "../store/authSlice";
 import { MoonLoader } from "react-spinners";
 import SmallModal from "../components/SmallModal/SmallModal";
+import { useUserData } from "../context/GetUserDataContext";
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -34,7 +35,8 @@ export default function Dashboard() {
   const [tempTransactionId, setTempTransactionId] = useState({
     id: 0,
     type: "",
-  });
+  }); 
+  const { getData } = useUserData();
 
   const filterByDate = (transactions: Transaction[], selectedPeriod: string) => {
     const currentDate = new Date();
@@ -119,21 +121,10 @@ export default function Dashboard() {
       return;
     }
 
-    const getData = async () => {
-      const response = await axios.get("/api/users", {
-        params: {
-          email: user?.email,
-        },
-      });
-      const userData = response.data.find((item: any) => item.email === user?.email);
-      if (userData) {
-        dispatch(setUserData({ spending: userData.spending, income: userData.income }));
-      }
-    };
-    if (user?.email) {
+    if (user?.email && !user.spending) {
       getData();
     }
-  }, [isLoggedIn, isLoading, router, user?.email, dispatch]);
+  }, [isLoggedIn, isLoading, router, user?.email, user?.spending]);
 
   if (isLoading) {
     return (

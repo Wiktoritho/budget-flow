@@ -26,7 +26,7 @@ export default function Menu() {
           </div>
           <p>Home</p>
         </Link>
-        <Link className={styles.menu__block_row} href="/">
+        <Link className={styles.menu__block_row} href="/flow">
           <div>
             <Image src="/Icons/hanger.svg" alt="Hanger Icon" width={20} height={20} />
           </div>

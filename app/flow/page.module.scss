@@ -1,0 +1,51 @@
+.dashboard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  &__section {
+    width: 100%;
+    height: 100%;
+    padding-inline: 10%;
+    &_top {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h2 {
+        margin-left: 50px;
+      }
+      div {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 20px;
+      }
+    }
+    &_bottom {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: var(--gray);
+      }
+      &_flex {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        width: 100%;
+        &_half {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

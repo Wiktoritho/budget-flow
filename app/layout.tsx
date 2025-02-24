@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { login, logout, setLoading } from "./store/authSlice";
 import { SpendingCategoriesProvider } from "./context/SpendingCategoriesContext";
 import { IncomeCategoriesProvider } from "./context/IncomeCategoriresContext";
+import { GetDataProvider } from "./context/GetUserDataContext";
 
 const poppinsSans = Poppins({
   subsets: ["latin"],
@@ -42,9 +43,11 @@ const LayoutWithUserCheck = ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={`${poppinsSans.className}`}>
         <main className={styles.main}>
-          <SpendingCategoriesProvider>
-            <IncomeCategoriesProvider>{children}</IncomeCategoriesProvider>
-          </SpendingCategoriesProvider>
+          <GetDataProvider>
+            <SpendingCategoriesProvider>
+              <IncomeCategoriesProvider>{children}</IncomeCategoriesProvider>
+            </SpendingCategoriesProvider>
+          </GetDataProvider>
         </main>
       </body>
     </html>

@@ -31,7 +31,7 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
-  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategoryReducer);
+  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
   const [tempCategories, setTempCategories] = useState<Category[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
