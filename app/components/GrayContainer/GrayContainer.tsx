@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState, useMemo } from "react";
 import styles from "./GrayContainer.module.scss";
 import Select, { StylesConfig } from "react-select";
@@ -167,7 +168,7 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
   }, [user?.income, transactionType, currentIncomePeriod]);
 
   useEffect(() => {
-    const { startDate, endDate } = getDateRange(comparedSpendingPeriod?.value || "this_week");
+    const { startDate, endDate } = getDateRange(comparedSpendingPeriod?.value || "last_week");
 
     if (user?.spending && user.spending.length > 0 && transactionType === "spending") {
       const filteredSpending = user.spending.filter((item) => {
@@ -179,7 +180,7 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
   }, [user?.spending, transactionType, comparedSpendingPeriod]);
 
   useEffect(() => {
-    const { startDate, endDate } = getDateRange(comparedIncomePeriod?.value || "this_week");
+    const { startDate, endDate } = getDateRange(comparedIncomePeriod?.value || "last_week");
 
     if (user?.income && user.income.length > 0 && transactionType === "income") {
       const filteredIncome = user.income.filter((item) => {
