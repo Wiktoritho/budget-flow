@@ -4,7 +4,7 @@ import styles from "./GrayContainer.module.scss";
 import Select, { StylesConfig } from "react-select";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import BarChart from "../BarChart/BarChart";
+// import BarChart from "../BarChart/BarChart";
 
 interface GrayContainerProps {
   title: string;
@@ -250,7 +250,7 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
                 />
               </div>
             </div>
-            <BarChart categories={categories} seriesData={spendingSeries} />
+            {/* <BarChart categories={categories} seriesData={spendingSeries} /> */}
           </>
         )}
       </div>
