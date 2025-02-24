@@ -8,6 +8,8 @@ import { store } from "./store";
 import Cookie from "js-cookie";
 import { useEffect } from "react";
 import { login, logout, setLoading } from "./store/authSlice";
+import { SpendingCategoriesProvider } from "./context/SpendingCategoriesContext";
+import { IncomeCategoriesProvider } from "./context/IncomeCategoriresContext";
 
 const poppinsSans = Poppins({
   subsets: ["latin"],
@@ -39,7 +41,11 @@ const LayoutWithUserCheck = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${poppinsSans.className}`}>
-        <main className={styles.main}>{children}</main>
+        <main className={styles.main}>
+          <SpendingCategoriesProvider>
+            <IncomeCategoriesProvider>{children}</IncomeCategoriesProvider>
+          </SpendingCategoriesProvider>
+        </main>
       </body>
     </html>
   );

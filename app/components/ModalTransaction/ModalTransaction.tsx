@@ -2,15 +2,14 @@
 import axios from "axios";
 import styles from "./ModalTransaction.module.scss";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "@/app/store/authSlice";
 import { v4 as uuidv4 } from "uuid";
 import Button from "../Button/Button";
 import Select from "react-select";
-import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { setSpendingCategoryData } from "@/app/store/spendingCategorySlice";
-import { setIncomeCategoryData } from "@/app/store/incomeCategorySlice";
+import { useIncomeCategories } from "@/app/context/IncomeCategoriresContext";
+import { useSpendingCategories } from "@/app/context/SpendingCategoriesContext";
 import Image from "next/image";
 
 interface ModalProps {
@@ -27,6 +26,9 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   const { user } = useSelector((state: RootState) => state.auth);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
   const { incomeCategories } = useSelector((state: RootState) => state.incomeCategoryReducer);
+  const { getIncomeCategories } = useIncomeCategories();
+  const { getSpendingCategories } = useSpendingCategories();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [transactionData, setTransactionData] = useState({
     name: "",
@@ -45,50 +47,6 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   const [spendingShow, setSpendingShow] = useState(false);
   const [incomeShow, setIncomeShow] = useState(false);
 
-  const getSpendingCategories = async () => {
-    if (!user?.email) return;
-
-    try {
-      const response = await axios.get("/api/users");
-      const userData = response.data.find((item: any) => item.email === user.email);
-
-      if (userData?.spendingCategories?.length > 0) {
-        const formattedCategories = userData.spendingCategories.map((category: string) => ({
-          value: category,
-          label: category,
-        }));
-
-        dispatch(setSpendingCategoryData({ categories: formattedCategories }));
-      } else {
-        console.log("No Categories");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getIncomeCategories = async () => {
-    if (!user?.email) return;
-
-    try {
-      const response = await axios.get("/api/users");
-      const userData = response.data.find((item: any) => item.email === user.email);
-
-      if (userData?.incomeCategories?.length > 0) {
-        const formattedCategories = userData.incomeCategories.map((category: string) => ({
-          value: category,
-          label: category,
-        }));
-
-        dispatch(setIncomeCategoryData({ categories: formattedCategories }));
-      } else {
-        console.log("No Categories");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     if (user?.email && spendingCategories.length === 0) {
       getSpendingCategories();
@@ -99,6 +57,8 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   }, [user?.email]);
 
   const setData = async (type: string) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     const response = await axios.post("/api/users/update", {
       email: email,
       transactionData: transactionData,
@@ -108,7 +68,9 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
 
     if (data.message === "Data Updated" && data.data) {
       dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
+      setIsProcessing(false)
     } else {
+      setIsProcessing(false)
       console.log("Failed to update data");
     }
 

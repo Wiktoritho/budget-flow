@@ -2,20 +2,19 @@
 import styles from "./SmallModal.module.scss";
 import Button from "../Button/Button";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/app/store";
 import { useState } from "react";
 import Select from "react-select";
-import { setSpendingCategoryData } from "@/app/store/spendingCategorySlice";
-import { setIncomeCategoryData } from "@/app/store/incomeCategorySlice";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { Category } from "@/app/store/incomeCategorySlice";
+import { useIncomeCategories } from "@/app/context/IncomeCategoriresContext";
+import { useSpendingCategories } from "@/app/context/SpendingCategoriesContext";
+import { setUserData } from "@/app/store/authSlice";
+import axios from "axios";
 
 interface ObjectProps {
-    id: number;
-    type: string;
+  id: number;
+  type: string;
 }
 
 interface ModalProps {
@@ -32,60 +31,26 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
-    const { incomeCategories } = useSelector((state: RootState) => state.incomeCategoryReducer);
-    const [tempCategories, setTempCategories] = useState<Category[]>([])
+  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategoryReducer);
+  const [tempCategories, setTempCategories] = useState<Category[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const { getIncomeCategories } = useIncomeCategories();
+  const { getSpendingCategories } = useSpendingCategories();
+
+  const [transactionError, setTransactionError] = useState({
+    name: false,
+    value: false,
+    category: false,
+  });
 
   const [transactionData, setTransactionData] = useState({
     name: "",
     value: "",
     category: "",
     date: new Date().toISOString(),
-    id: uuidv4(),
+    id: transactionId.id,
   });
-
-  const getSpendingCategories = async () => {
-    if (!user?.email) return;
-
-    try {
-      const response = await axios.get("/api/users");
-      const userData = response.data.find((item: any) => item.email === user.email);
-
-      if (userData?.spendingCategories?.length > 0) {
-        const formattedCategories = userData.spendingCategories.map((category: string) => ({
-          value: category,
-          label: category,
-        }));
-
-        dispatch(setSpendingCategoryData({ categories: formattedCategories }));
-      } else {
-        console.log("No Categories");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getIncomeCategories = async () => {
-    if (!user?.email) return;
-
-    try {
-      const response = await axios.get("/api/users");
-      const userData = response.data.find((item: any) => item.email === user.email);
-
-      if (userData?.incomeCategories?.length > 0) {
-        const formattedCategories = userData.incomeCategories.map((category: string) => ({
-          value: category,
-          label: category,
-        }));
-
-        dispatch(setIncomeCategoryData({ categories: formattedCategories }));
-      } else {
-        console.log("No Categories");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     if (user?.email && spendingCategories.length === 0) {
@@ -95,16 +60,86 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
       getIncomeCategories();
     }
   }, [user?.email]);
-    
-    useEffect(() => {
-        if (transactionId.type === 'spending') {
-            setTempCategories(spendingCategories)
-        } else if (transactionId.type === 'income') {
-            setTempCategories(incomeCategories)
-        } 
 
-        
-    }, [spendingCategories, incomeCategories])
+  useEffect(() => {
+    if (transactionId.type === "spending") {
+      setTempCategories(spendingCategories);
+    } else if (transactionId.type === "income") {
+      setTempCategories(incomeCategories);
+    }
+  }, [spendingCategories, incomeCategories]);
+
+  const setData = async (type: string) => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+    setTransactionData({
+      ...transactionData,
+      id: transactionId.id,
+    });
+    const response = await axios.post("/api/users/edit", {
+      email: email,
+      transactionData: transactionData,
+      type: type,
+    });
+    const data = response.data;
+
+    if (data.message === "Data Updated" && data.data) {
+      dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
+      setIsProcessing(false);
+    } else {
+      console.log("Failed to update data");
+      setIsProcessing(false)
+    }
+
+    clearData();
+    onClose();
+  };
+
+  const clearData = () => {
+    setTransactionError({
+      name: false,
+      value: false,
+      category: false,
+    });
+
+    setTransactionData({
+      name: "",
+      value: "",
+      category: "",
+      date: new Date().toISOString(),
+      id: transactionId.id,
+    });
+  };
+
+  const handleSave = (type: string) => {
+    const trimmedName = transactionData.name.trim();
+    const trimmedCategory = transactionData.category.trim();
+    const trimmedValue = transactionData.value.trim();
+
+    let error = {
+      name: false,
+      value: false,
+      category: false,
+    };
+
+    if (!trimmedName) {
+      error.name = true;
+    }
+    if (!trimmedValue || isNaN(Number(trimmedValue)) || Number(trimmedValue) <= 0) {
+      error.value = true;
+    }
+    if (!trimmedCategory) {
+      error.category = true;
+    }
+
+    setTransactionError(error);
+
+    if (error.name || error.value || error.category) {
+      return;
+    }
+
+    setData(type);
+  };
 
   return (
     <div className={styles.modal__overlay} onClick={onClose}>
@@ -119,11 +154,35 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
           <div className={styles.modal__content_show_inputs}>
             <label>
               Name
-              <input type="text" placeholder="Name" />
+              <input
+                type="text"
+                placeholder="Name"
+                value={transactionData.name}
+                onChange={(e) =>
+                  setTransactionData({
+                    ...transactionData,
+                    name: e.target.value,
+                  })
+                }
+              />
             </label>
             <label>
               Price
-              <input type="number" placeholder="Value" />
+              <input
+                type="number"
+                placeholder="Value"
+                value={transactionData.value}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const regex = /^\d*\.{0,1}\d{0,2}$/;
+                  if (regex.test(value)) {
+                    setTransactionData({
+                      ...transactionData,
+                      value: value,
+                    });
+                  }
+                }}
+              />
             </label>
             <label>
               Category
@@ -170,13 +229,13 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
                   }
                 />
               ) : (
-                  <p>Loading...</p>
-                  //t
+                <p>Loading...</p>
               )}
             </label>
           </div>
+          {(transactionError.name || transactionError.value || transactionError.category) && <p className={styles.modal__content_show_error}>Every data must be filled.</p>}
           <div className={styles.modal__content_show_buttons}>
-            <Button onClick={onClose} text="Save" variant="green" />
+            <Button onClick={() => handleSave(transactionId.type)} text="Save" variant="green" />
             <Button onClick={onClose} text="Cancel" variant="white" />
           </div>
         </div>

@@ -23,6 +23,8 @@ export default function Dashboard() {
   const router = useRouter();
   const periods = ["Daily", "Weekly", "Monthly", "Yearly"];
   const { user, isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
+  const [isSpendingLoading, setIsSpendingLoading] = useState(true);
+  const [isIncomeLoading, setIsIncomeLoading] = useState(true);
 
   const [selectedSpendingPeriod, setSelectedSpendingPeriod] = useState<string>("Yearly");
   const [selectedIncomePeriod, setSelectedIncomePeriod] = useState<string>("Yearly");
@@ -99,6 +101,15 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    if (filteredIncome.length > 0) {
+      setIsIncomeLoading(false);
+    }
+    if (filteredSpending.length > 0) {
+      setIsSpendingLoading(false);
+    }
+  }, [filteredIncome, filteredSpending]);
+
+  useEffect(() => {
     if (isLoading) {
       return;
     }
@@ -149,7 +160,9 @@ export default function Dashboard() {
             </div>
             <div className={styles.dashboard__section_bottom}>
               <div className={styles.tiles}>
-                {filteredSpending.length > 0 ? (
+                {isSpendingLoading ? (
+                  <MoonLoader />
+                ) : filteredSpending.length > 0 ? (
                   filteredSpending.map((element, index) => (
                     <div key={index} className={styles.tiles__tile}>
                       {element.category && (
@@ -187,7 +200,9 @@ export default function Dashboard() {
             </div>
             <div className={styles.dashboard__section_bottom}>
               <div className={styles.tiles}>
-                {filteredIncome.length > 0 ? (
+                {isIncomeLoading ? (
+                  <MoonLoader />
+                ) : filteredIncome.length > 0 ? (
                   filteredIncome.map((element, index) => (
                     <div key={index} className={styles.tiles__tile}>
                       {element.category && (
