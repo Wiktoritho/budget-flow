@@ -4,7 +4,7 @@ import styles from "./GrayContainer.module.scss";
 import Select, { StylesConfig } from "react-select";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-// import BarChart from "../BarChart/BarChart";
+import dynamic from "next/dynamic";
 
 interface GrayContainerProps {
   title: string;
@@ -143,6 +143,8 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
   const [currentIncomeValues, setCurrentIncomeValues] = useState<number[]>([]);
   const [comparedIncomeValues, setComparedIncomeValues] = useState<number[]>([]);
 
+  const BarChart = dynamic(() => import('../BarChart/BarChart'), {ssr: false})
+
   useEffect(() => {
     const { startDate, endDate } = getDateRange(currentSpendingPeriod?.value || "this_week");
 
@@ -250,7 +252,7 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
                 />
               </div>
             </div>
-            {/* <BarChart categories={categories} seriesData={spendingSeries} /> */}
+            <BarChart categories={categories} seriesData={spendingSeries} />
           </>
         )}
       </div>
