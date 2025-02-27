@@ -24,13 +24,15 @@ export async function POST(request) {
         "Food and household chemicals",
         "Payments",
         "Subscription",
+        "Other spending"
       ],
       incomeCategories: [
         "Work salary",
         "Own business",
         "Refunds",
         "Sales",
-        "Services"
+        "Services",
+        "Other income"
       ]
     });
     return NextResponse.json({
