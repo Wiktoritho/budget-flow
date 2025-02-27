@@ -18,42 +18,53 @@ export default function GrayContainer({
   transactionType,
   selects,
 }: GrayContainerProps) {
-  const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
-  const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
+  const { spendingCategories } = useSelector(
+    (state: RootState) => state.spendingCategory
+  );
+  const { incomeCategories } = useSelector(
+    (state: RootState) => state.incomeCategory
+  );
   const { user } = useSelector((state: RootState) => state.auth);
-  const [showBar, setShowBar] = useState(false)
-  const [lastSelectedEndDate, setLastSelectedEndDate] = useState<Date | null>(null);
+  const [showBar, setShowBar] = useState(false);
 
-  const [currentDates, setCurrentDates] = useState<{ start: Date | null; end: Date | null }>({
+  const [currentDates, setCurrentDates] = useState<{
+    start: Date | null;
+    end: Date | null;
+  }>({
     start: new Date(),
     end: null,
   });
-  const [comparedDates, setComparedDates] = useState<{ start: Date | null; end: Date | null }>({
+  const [comparedDates, setComparedDates] = useState<{
+    start: Date | null;
+    end: Date | null;
+  }>({
     start: new Date(),
     end: null,
   });
 
-  const [currentValues, setCurrentValues] = useState<number[]>([]);
-  const [comparedValues, setComparedValues] = useState<number[]>([]);
+  const [currentValues, setCurrentValues] = useState<{ value: number, category: string }[]>([]);
+  const [comparedValues, setComparedValues] = useState<{ value: number, category: string }[]>([]);
 
   const onChange = (dates: (Date | null)[], type: "current" | "compared") => {
     const [start, end] = dates;
     if (type === "current") {
       setCurrentDates({ start, end });
       if (end) {
-        setLastSelectedEndDate(end);
-        setShowBar(true)
+        setShowBar(true);
       }
     } else {
       setComparedDates({ start, end });
       if (end) {
-        setLastSelectedEndDate(end);
-        setShowBar(true)
+        setShowBar(true);
       }
     }
   };
 
-  const filterData = (data: any[], startDate: Date | null, endDate: Date | null) => {
+  const filterData = (
+    data: any[],
+    startDate: Date | null,
+    endDate: Date | null
+  ) => {
     if (startDate && endDate) {
       return data.filter((item) => {
         const itemDate = new Date(item.date);
@@ -63,18 +74,68 @@ export default function GrayContainer({
     return [];
   };
 
-  const updateValues = (data: any[], startDate: Date | null, endDate: Date | null, setValues: React.Dispatch<React.SetStateAction<number[]>>) => {
+  const updateValues = (
+    data: any[],
+    startDate: Date | null,
+    endDate: Date | null,
+    setValues: React.Dispatch<React.SetStateAction<any[]>>,
+    categories: string[]
+  ) => {
     const filteredData = filterData(data, startDate, endDate);
-    setValues(filteredData.map((element) => element.value));
+
+    const groupedData = filteredData.reduce((acc, element) => {
+      const { value, category } = element;
+
+      const numericValue = parseFloat(value);
+
+      if (acc[category]) {
+        acc[category] += numericValue;
+      } else {
+        acc[category] = numericValue;
+      }
+
+      return acc;
+    }, {} as { [category: string]: number });
+
+    const result = categories.map((category) => ({
+      value: groupedData[category] || 0,
+      category,
+    }));
+
+    setValues(result);
   };
 
   useEffect(() => {
     if (transactionType === "spending" && user?.spending) {
-      updateValues(user.spending, currentDates.start, currentDates.end, setCurrentValues);
-      updateValues(user.spending, comparedDates.start, comparedDates.end, setComparedValues);
+      updateValues(
+        user.spending,
+        currentDates.start,
+        currentDates.end,
+        setCurrentValues,
+        categories
+      );
+      updateValues(
+        user.spending,
+        comparedDates.start,
+        comparedDates.end,
+        setComparedValues,
+        categories
+      );
     } else if (transactionType === "income" && user?.income) {
-      updateValues(user.income, currentDates.start, currentDates.end, setCurrentValues);
-      updateValues(user.income, comparedDates.start, comparedDates.end, setComparedValues);
+      updateValues(
+        user.income,
+        currentDates.start,
+        currentDates.end,
+        setCurrentValues,
+        categories
+      );
+      updateValues(
+        user.income,
+        comparedDates.start,
+        comparedDates.end,
+        setComparedValues,
+        categories
+      );
     }
   }, [user, currentDates, comparedDates, transactionType]);
 
@@ -87,21 +148,28 @@ export default function GrayContainer({
   const spendingSeries = useMemo(() => {
     return [
       {
-        name: transactionType === "spending" ? "Current period spendings" : "Current period incomes",
-        data: [...currentValues]
+        name:
+          transactionType === "spending"
+            ? "Current period spendings"
+            : "Current period incomes",
+        data: currentValues.map((element) => element.value),
       },
       {
-        name: transactionType === "spending" ? "Compared period spendings" : "Compared period incomes",
-        data: [...comparedValues]
+        name:
+          transactionType === "spending"
+            ? "Compared period spendings"
+            : "Compared period incomes",
+        data: comparedValues.map((element) => element.value),
       },
     ];
   }, [currentValues, comparedValues, transactionType]);
 
-  const BarChart = useMemo(() => dynamic(() => import("../BarChart/BarChart"), { ssr: false }), []);
+  const BarChart = useMemo(
+    () => dynamic(() => import("../BarChart/BarChart"), { ssr: false }),
+    []
+  );
 
   const categories = useMemo(() => {
-    console.log(spendingCategories.map((category) => category.label));
-    
     return transactionType === "spending"
       ? spendingCategories.map((category) => category.label)
       : incomeCategories.map((category) => category.label);
@@ -116,7 +184,11 @@ export default function GrayContainer({
             <div className={styles.grayContainer__navigation_block}>
               <p>Current period</p>
               <DatePicker
-                selected={transactionType === "spending" ? currentDates.start : currentDates.start}
+                selected={
+                  transactionType === "spending"
+                    ? currentDates.start
+                    : currentDates.start
+                }
                 onChange={(dates) => onChange(dates, "current")}
                 startDate={currentDates.start}
                 endDate={currentDates.end}
@@ -126,7 +198,11 @@ export default function GrayContainer({
             <div className={styles.grayContainer__navigation_block}>
               <p>Compared period</p>
               <DatePicker
-                selected={transactionType === "spending" ? comparedDates.start : comparedDates.start}
+                selected={
+                  transactionType === "spending"
+                    ? comparedDates.start
+                    : comparedDates.start
+                }
                 onChange={(dates) => onChange(dates, "compared")}
                 startDate={comparedDates.start}
                 endDate={comparedDates.end}
@@ -134,7 +210,9 @@ export default function GrayContainer({
               />
             </div>
           </div>
-          {showBar && <BarChart categories={categories} seriesData={spendingSeries} />}
+          {showBar && (
+            <BarChart categories={categories} seriesData={spendingSeries} />
+          )}
         </>
       )}
     </div>

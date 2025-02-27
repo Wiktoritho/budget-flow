@@ -21,7 +21,7 @@ export async function POST(request) {
         "Clothes and Shoes",
         "Entertainment",
         "Equipment",
-        "Food and household chemicals",
+        "Food",
         "Payments",
         "Subscription",
         "Other spending"

@@ -13,6 +13,7 @@ interface BarChartProps {
 }
 
 const BarChart: React.FC<BarChartProps> = ({ categories, seriesData }) => {
+  
   const options: ApexOptions = {
     chart: {
       type: "bar", 
@@ -22,7 +23,7 @@ const BarChart: React.FC<BarChartProps> = ({ categories, seriesData }) => {
       categories: categories,
     },
   };
-
+  
   return <Chart options={options} series={seriesData} type="bar" height={350} />;
 };
 
