@@ -74,7 +74,7 @@ export default function Dashboard() {
   const filteredSpending = Array.isArray(user?.spending) ? filterSpendingBySearch(sortByValue(filterByDate(user.spending, selectedSpendingPeriod))) : [];
 
   const filteredIncome = Array.isArray(user?.income) ? sortByValue(filterByDate(user.income, selectedIncomePeriod)) : [];
-
+  
   const getImageFromCategory = (category: string) => {
     return `${category.toLowerCase().replaceAll(" ", "-")}.png`;
   };
@@ -103,13 +103,11 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (filteredIncome.length > 0) {
+    if (!isLoading) {
       setIsIncomeLoading(false);
-    }
-    if (filteredSpending.length > 0) {
       setIsSpendingLoading(false);
     }
-  }, [filteredIncome, filteredSpending]);
+  }, [filteredIncome, filteredSpending, isLoading]);
 
   useEffect(() => {
     if (isLoading) {
@@ -121,10 +119,10 @@ export default function Dashboard() {
       return;
     }
 
-    if (user?.email && !user.spending) {
+    if (user?.email) {
       getData();
     }
-  }, [isLoggedIn, isLoading, router, user?.email, user?.spending]);
+  }, [isLoggedIn, isLoading, router, user?.email]);
 
   if (isLoading) {
     return (
