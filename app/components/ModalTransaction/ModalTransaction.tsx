@@ -11,6 +11,8 @@ import { RootState } from "@/app/store";
 import { useIncomeCategories } from "@/app/context/IncomeCategoriresContext";
 import { useSpendingCategories } from "@/app/context/SpendingCategoriesContext";
 import Image from "next/image";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface ModalProps {
   isOpen: Boolean;
@@ -29,6 +31,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
   const { getIncomeCategories } = useIncomeCategories();
   const { getSpendingCategories } = useSpendingCategories();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [startDate, setStartDate] = useState<Date | null>(null);
 
   const [transactionData, setTransactionData] = useState({
     name: "",
@@ -68,9 +71,9 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
 
     if (data.message === "Data Updated" && data.data) {
       dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
-      setIsProcessing(false)
+      setIsProcessing(false);
     } else {
-      setIsProcessing(false)
+      setIsProcessing(false);
       console.log("Failed to update data");
     }
 
@@ -92,6 +95,8 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
       date: new Date().toISOString(),
       id: uuidv4(),
     });
+
+    setStartDate(null);
   };
 
   const handleSave = (type: string) => {
@@ -235,6 +240,20 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
                 <p>Loading...</p>
               )}
             </label>
+            <label>
+              Date
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => {
+                  setStartDate(date);
+                  setTransactionData({
+                    ...transactionData,
+                    date: date ? date.toISOString() : new Date().toISOString(),
+                  });
+                }}
+                placeholderText="Select date"
+              />
+            </label>
           </div>
           {(transactionError.name || transactionError.value || transactionError.category) && <p className={styles.modal__content_show_error}>Every data must be filled.</p>}
           <div className={styles.modal__content_show_buttons}>
@@ -337,6 +356,20 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
               ) : (
                 <p>Loading...</p>
               )}
+            </label>
+            <label>
+              Date
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => {
+                  setStartDate(date);
+                  setTransactionData({
+                    ...transactionData,
+                    date: date ? date.toISOString() : new Date().toISOString(),
+                  });
+                }}
+                placeholderText="Select date"
+              />
             </label>
           </div>
           {(transactionError.name || transactionError.value || transactionError.category) && <p className={styles.modal__content_show_error}>Every data must be filled.</p>}

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UseDispatch } from "react-redux";
 import { MoonLoader } from "react-spinners";
 import { useUserData } from "../context/GetUserDataContext";
 import { useSpendingCategories } from "../context/SpendingCategoriesContext";
@@ -18,7 +17,6 @@ import { useIncomeCategories } from "../context/IncomeCategoriresContext";
 
 export default function Flow() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { user, isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
   const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
