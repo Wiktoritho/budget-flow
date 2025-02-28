@@ -1,0 +1,32 @@
+.dashboard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  &__section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60vh;
+    padding-inline: 10%;
+    &_top {
+      margin-top: 30px;
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 50%;
+    }
+    &_block {
+      width: 35%;
+    }
+  }
+}
+.profile {
+  width: 100%;
+  background-color: var(--background);
+  border-radius: 12px;
+  padding: 30px;
+}

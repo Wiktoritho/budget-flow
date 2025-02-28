@@ -9,9 +9,10 @@ interface NavbarProps {
   userActive: Boolean;
   onSearch?: (query: string) => void;
   addTransaction?: (value: Boolean) => void;
+  search: boolean;
 }
 
-export default function Navbar({ userActive, onSearch, addTransaction }: NavbarProps) {
+export default function Navbar({ userActive, onSearch, addTransaction, search }: NavbarProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +36,7 @@ export default function Navbar({ userActive, onSearch, addTransaction }: NavbarP
             </div>
           ) : (
             <div className={styles.navbar__block_flex}>
-              <input placeholder="Search for expenses" onChange={handleSearch} />
+              {search && <input placeholder="Search for expenses" onChange={handleSearch} />}
             </div>
           )}
         </div>

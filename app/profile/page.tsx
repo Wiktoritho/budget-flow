@@ -5,23 +5,23 @@ import Navbar from "../components/Navbar/Navbar";
 import Menu from "../components/Menu/Menu";
 import Footer from "../components/Footer/Footer";
 import Modal from "../components/ModalTransaction/ModalTransaction";
-import GrayContainer from "../components/GrayContainer/GrayContainer";
-import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MoonLoader } from "react-spinners";
 import { useUserData } from "../context/GetUserDataContext";
+import { MoonLoader } from "react-spinners";
 import { useSpendingCategories } from "../context/SpendingCategoriesContext";
 import { useIncomeCategories } from "../context/IncomeCategoriresContext";
 
-export default function Flow() {
+export default function Profile() {
   const router = useRouter();
-  const { user, isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
+  const [newTransaction, setNewTransaction] = useState<Boolean>(false);
   const { spendingCategories } = useSelector((state: RootState) => state.spendingCategory);
   const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
+  const { user, isLoggedIn, isLoading } = useSelector((state: RootState) => state.auth);
   const { getData } = useUserData();
-  const [newTransaction, setNewTransaction] = useState<Boolean>(false);
   const { getSpendingCategories } = useSpendingCategories();
   const { getIncomeCategories } = useIncomeCategories();
 
@@ -63,20 +63,27 @@ export default function Flow() {
         <div className={styles.dashboard}>
           <Menu />
           <section className={styles.dashboard__section}>
-            <div className={styles.dashboard__section_top}>
-              <h2>Spendings</h2>
-            </div>
-            <div className={styles.dashboard__section_bottom}>
-              <div className={styles.dashboard__section_bottom_flex}>
-                <GrayContainer title="Overview" transactionType="spending" selects={true} />
-              </div>
-            </div>
-            <div className={styles.dashboard__section_top}>
-              <h2>Incomes</h2>
-            </div>
-            <div className={styles.dashboard__section_bottom}>
-              <div className={styles.dashboard__section_bottom_flex}>
-                <GrayContainer title="Overview" transactionType="income" selects={true}/>
+            <div className={styles.profile}>
+              <h3>Profile Overview</h3>
+              <div className={styles.dashboard__section_top}>
+                <div className={styles.dashboard__section_block}>
+                  <p>Name: <span>{user?.name}</span></p>
+                  <button>Change Name</button>
+                </div>
+                <div className={styles.dashboard__section_block}>
+                  <p>Password: <span>***********</span></p>
+                  <button>Change Password</button>
+                </div>
+                <div className={styles.dashboard__section_block}>
+                  <p>E-mail: <span>{user?.email}</span></p>
+                  <button>Change E-mail</button>
+                </div>
+                <div className={styles.dashboard__section_block}>
+                  <p>Picture: <span>
+                  <Image src="/Images/profile-pic.jpg" alt="Profile Picture" width={44} height={44}/>
+                  </span></p>
+                  <button>Change Picture</button>
+                </div>
               </div>
             </div>
           </section>

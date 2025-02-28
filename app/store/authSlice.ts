@@ -12,6 +12,7 @@ interface User {
   email: string;
   spending: Transaction[];
   income: Transaction[];
+  name: string;
 }
 
 interface AuthState {
@@ -43,10 +44,11 @@ const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    setUserData: (state, action: PayloadAction<{ spending: Transaction[]; income: Transaction[] }>) => {
+    setUserData: (state, action: PayloadAction<{ spending: Transaction[]; income: Transaction[]; name: string }>) => {
       if (state.user) {
         state.user.spending = action.payload.spending;
         state.user.income = action.payload.income;
+        state.user.name = action.payload.name
       }
     },
   },

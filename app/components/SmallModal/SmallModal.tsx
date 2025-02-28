@@ -11,6 +11,8 @@ import { useIncomeCategories } from "@/app/context/IncomeCategoriresContext";
 import { useSpendingCategories } from "@/app/context/SpendingCategoriesContext";
 import { setUserData } from "@/app/store/authSlice";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface ObjectProps {
   id: number;
@@ -34,6 +36,7 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
   const { incomeCategories } = useSelector((state: RootState) => state.incomeCategory);
   const [tempCategories, setTempCategories] = useState<Category[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [startDate, setStartDate] = useState<Date | null>(null);
 
   const { getIncomeCategories } = useIncomeCategories();
   const { getSpendingCategories } = useSpendingCategories();
@@ -88,7 +91,7 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
       setIsProcessing(false);
     } else {
       console.log("Failed to update data");
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
 
     clearData();
@@ -109,6 +112,8 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
       date: new Date().toISOString(),
       id: transactionId.id,
     });
+
+    setStartDate(null);
   };
 
   const handleSave = (type: string) => {
@@ -231,6 +236,20 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
               ) : (
                 <p>Loading...</p>
               )}
+            </label>
+            <label>
+              Date
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => {
+                  setStartDate(date);
+                  setTransactionData({
+                    ...transactionData,
+                    date: date ? date.toISOString() : new Date().toISOString(),
+                  });
+                }}
+                placeholderText="Select date"
+              />
             </label>
           </div>
           {(transactionError.name || transactionError.value || transactionError.category) && <p className={styles.modal__content_show_error}>Every data must be filled.</p>}

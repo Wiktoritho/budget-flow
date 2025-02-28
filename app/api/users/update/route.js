@@ -4,35 +4,50 @@ import { dbUsersConnection } from "../../../utils/db";
 
 export async function POST(request) {
   try {
-    const { email, transactionData, type } = await request.json();
+    const { email, transactionData, type, newName, newEmail } = await request.json();
 
-    if (!email || !transactionData || typeof transactionData !== "object") {
-      return NextResponse.json({ error: "Invalid request data" }, { status: 400 });
+    if (!email) {
+      return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
     const db = await dbUsersConnection();
     const collection = db.collection("credentials");
-
     const existingUser = await collection.findOne({ email });
 
     if (!existingUser) {
       return NextResponse.json({ message: "User not found" }, { status: 400 });
     }
 
-    const updateField = type === 'income' ? 'income' : 'spending'
+    let updateFields = {};
 
-    const result = await collection.updateOne(
-      { email },
-      { $push: { [updateField]: transactionData } }
-    );
-
-    if (result.modifiedCount === 0) {
-      return NextResponse.json({ message: "Update failed" }, { status: 500 });
+    if (newName) {
+      updateFields.name = newName;
     }
 
-    const updatedUser = await collection.findOne({ email });
-    return NextResponse.json({ message: "Data Updated", data: updatedUser });
+    if (newEmail && newEmail !== email) {
+      const emailExists = await collection.findOne({ email: newEmail });
+      if (emailExists) {
+        return NextResponse.json({ message: "New email already in use" }, { status: 400 });
+      }
+      updateFields.email = newEmail;
+    }
 
+    if (transactionData && typeof transactionData === "object") {
+      const updateField = type === "income" ? "income" : "spending";
+      updateFields.$push = { [updateField]: transactionData };
+    }
+
+    if (Object.keys(updateFields).length > 0) {
+      const result = await collection.updateOne({ email }, { $set: updateFields });
+
+      if (result.modifiedCount === 0) {
+        return NextResponse.json({ message: "Update failed" }, { status: 500 });
+      }
+    }
+
+    const updatedUser = await collection.findOne({ email: newEmail || email });
+
+    return NextResponse.json({ message: "Data Updated", data: updatedUser });
   } catch (error) {
     console.error("Server Error:", error);
     return NextResponse.json({ error: "Server Error" }, { status: 500 });

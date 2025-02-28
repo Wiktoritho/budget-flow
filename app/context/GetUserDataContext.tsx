@@ -18,7 +18,7 @@ export function GetDataProvider({ children }: { children: React.ReactNode }) {
     });
     const userData = response.data.find((item: any) => item.email === user?.email);
     if (userData) {
-      dispatch(setUserData({ spending: userData.spending, income: userData.income }));
+      dispatch(setUserData({ spending: userData.spending, income: userData.income, name: userData.name }));
     }
   };
 

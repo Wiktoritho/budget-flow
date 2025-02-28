@@ -135,7 +135,7 @@ export default function Dashboard() {
   return (
     isLoggedIn && (
       <>
-        <Navbar userActive={true} onSearch={setSearchQuery} addTransaction={() => setNewTransaction(true)} />
+        <Navbar userActive={true} onSearch={setSearchQuery} search={true} addTransaction={() => setNewTransaction(true)} />
         <div className={styles.dashboard}>
           <Menu />
           <section className={styles.dashboard__section}>

@@ -6,6 +6,7 @@ import { RootState } from "@/app/store";
 import dynamic from "next/dynamic";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Placeholder } from "react-select/animated";
 
 interface GrayContainerProps {
   title: string;
@@ -17,6 +18,7 @@ interface InputProps {
   value: string;
   onClick: () => void;
   className?: string;
+  placeholder: string;
 }
 
 export default function GrayContainer({ title, transactionType, selects }: GrayContainerProps) {
@@ -30,14 +32,14 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
     start: Date | null;
     end: Date | null;
   }>({
-    start: new Date(),
+    start: null,
     end: null,
   });
   const [comparedDates, setComparedDates] = useState<{
     start: Date | null;
     end: Date | null;
   }>({
-    start: new Date(),
+    start: null,
     end: null,
   });
 
@@ -161,10 +163,10 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
 
   const PieChart = useMemo(() => dynamic(() => import("../PieChart/PieChart"), { ssr: false }), []);
 
-  const DateInput = forwardRef<HTMLButtonElement, InputProps>(({ value, onClick, className }: InputProps, ref: Ref<HTMLButtonElement>) => {
+  const DateInput = forwardRef<HTMLButtonElement, InputProps>(({ value, onClick, className, placeholder }: InputProps, ref: Ref<HTMLButtonElement>) => {
     return (
       <button className={className} onClick={onClick} ref={ref}>
-        {value}
+        {value ? value : placeholder}
       </button>
     );
   });
@@ -187,8 +189,9 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
                 startDate={currentDates.start}
                 endDate={currentDates.end}
                 selectsRange
-                customInput={<DateInput value="Select date" onClick={() => { }} className={styles.grayContainer__currentInput} />}
+                customInput={<DateInput value="Select date" placeholder="Select dates" onClick={() => { }} className={styles.grayContainer__currentInput} />}
                 calendarClassName={styles.grayContainer__calendar}
+                placeholderText="Select dates"
               />
             </div>
             <div className={styles.grayContainer__navigation_block}>
@@ -199,8 +202,9 @@ export default function GrayContainer({ title, transactionType, selects }: GrayC
                 startDate={comparedDates.start}
                 endDate={comparedDates.end}
                 selectsRange
-                customInput={<DateInput value="Select date" onClick={() => { }} className={styles.grayContainer__comparedInput} />}
+                customInput={<DateInput value="Select date" placeholder="Select dates" onClick={() => { }} className={styles.grayContainer__comparedInput} />}
                 calendarClassName={styles.grayContainer__calendar}
+                placeholderText="Select dates"
               />
             </div>
           </div>
