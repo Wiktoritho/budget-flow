@@ -28,7 +28,7 @@ export default function LoginForm({ type }: { type: string }) {
       const response = await axios.post("/api/login", values);
       if (response.status === 200) {
         Cookie.set("user", JSON.stringify({ email: values.email }), { expires: 7 });
-        dispatch(login({ email: values.email, spending: [], income: [] }));
+        dispatch(login({ email: values.email, spending: [], income: [], name: '' }));
         router.push("/dashboard");
         setIsProcessing(false);
       }
