@@ -87,7 +87,7 @@ export default function SmallModal({ isOpen, title, onClose, email, transactionI
     const data = response.data;
 
     if (data.message === "Data Updated" && data.data) {
-      dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
+      dispatch(setUserData({ spending: data.data.spending, income: data.data.income, name: data.data.name }));
       setIsProcessing(false);
     } else {
       console.log("Failed to update data");
