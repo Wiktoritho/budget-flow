@@ -86,7 +86,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar userActive={isLoggedIn} />
+      <Navbar search={false} userActive={isLoggedIn} />
       <section className={styles.main__container}>
         <div className={styles.intro}>
           <div className={styles.intro__block}>
