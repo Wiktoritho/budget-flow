@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <>
-      <Navbar userActive={isLoggedIn} />
+      <Navbar search={false} userActive={isLoggedIn} />
       <UserForm type="Log in" />
     </>
   );
