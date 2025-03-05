@@ -88,7 +88,7 @@ export default function Dashboard() {
 
     const data = response.data;
     if (data.message === "Transaction removed") {
-      dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
+      dispatch(setUserData({ spending: data.data.spending, income: data.data.income, name: data.data.name }));
     } else {
       console.log("Error when removing transaction");
     }
