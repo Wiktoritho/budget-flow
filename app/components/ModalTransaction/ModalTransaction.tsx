@@ -70,7 +70,7 @@ export default function Modal({ isOpen, onClose, title, email }: ModalProps) {
     const data = response.data;
 
     if (data.message === "Data Updated" && data.data) {
-      dispatch(setUserData({ spending: data.data.spending, income: data.data.income }));
+      dispatch(setUserData({ spending: data.data.spending, income: data.data.income, name: data.data.name }));
       setIsProcessing(false);
     } else {
       setIsProcessing(false);
